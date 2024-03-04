@@ -34,18 +34,32 @@ const showActivity = (activity) => {
 
     saveBtn.addEventListener("click", ()=>{
         saveActivity(activity) })
+    
+    deleteBtn.addEventListener("click", ()=>{
+        deleteActivity(activity)
+    })
     activityCard.append(text, saveBtn, deleteBtn);
     activityContainer.append(activityCard)
 
 } 
 
 const saveActivity = (activity) => {
-    activitiesArray = JSON.parse(localStorage.getItem("savedActivities")) || []
-    activitiesArray.push(activity)
-
+    activitiesArray = JSON.parse(localStorage.getItem("savedActivities")) || [];
+    activitiesArray.push(activity);
     localStorage.setItem("savedActivities", JSON.stringify(activitiesArray));
-    
 }
+
+const deleteActivity = (activity) => {
+    activitiesArray = JSON.parse(localStorage.getItem("savedActivities")) || [];
+    const index = activitiesArray.findIndex(item => item.activity === activity.activity);
+    if (index !== -1) {
+        activitiesArray.splice(index, 1);
+        localStorage.setItem("savedActivities", JSON.stringify(activitiesArray));
+        showSavedActivity(); // Update the DOM after deletion
+    }
+}
+
+
 
 const showSavedActivity = () => {
     activitiesArray = JSON.parse(localStorage.getItem("savedActivities")) || []
